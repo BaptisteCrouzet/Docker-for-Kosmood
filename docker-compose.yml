@@ -5,12 +5,14 @@ services:
         image: mysql:latest
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: kosmood
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
         volumes:
           - ./data:/var/lib/mysql/
+        ports:
+            - 3306:3306
     adminer:
       image: adminer
       restart: always
