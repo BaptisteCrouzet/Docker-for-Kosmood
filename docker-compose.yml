@@ -1,20 +1,21 @@
 version: '3'
 
 services:
-    db:
-        image: mysql:8.0.20
-        command: --default-authentication-plugin=mysql_native_password
-        volumes:
-            - "db_app:/var/lib/mysql"
+    dbMysql:
+        image: mysql:latest
+        restart: always
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-        ports:
-            - 3306:3306
-        networks:
-            - symfony
+        volumes:
+          - ./data:/var/lib/mysql/
+    adminer:
+      image: adminer
+      restart: always
+      ports:
+        - 8182:8080
     php:
         build:
             context: .
