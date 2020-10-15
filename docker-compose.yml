@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    dbMysql:
+    mysql:
         image: mysql:latest
         restart: always
         environment:
@@ -19,23 +19,33 @@ services:
       ports:
         - 8182:8080
     php:
+        depends_on:
+            - mysql
         build:
             context: .
             dockerfile: docker/php/Dockerfile
             args:
-                TIMEZONE: ${TIMEZONE}
+                TIMEZONE: ${PHP_TIMEZONE}
         volumes:
-            - ./symfony/:/var/www/symfony/
+            - ./www/:/var/www/symfony/
         networks:
             - symfony
+        environment:
+          - APP_ENV=${APP_ENV}
+          - APP_SECRET=${APP_SECRET}
+          - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@127.0.0.1:3306/${MYSQL_DATABASE}
+          - PHP_TIMEZONE=${PHP_TIMEZONE}
     nginx:
+        depends_on:
+            - php
         build:
             context: .
             dockerfile: docker/nginx/Dockerfile
         volumes:
-            - ./symfony/:/var/www/symfony/
+            - ./www/:/var/www/symfony/
         ports:
             - 80:80
+            - 443:443
         networks:
             - symfony
 
