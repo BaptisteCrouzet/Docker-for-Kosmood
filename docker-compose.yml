@@ -13,11 +13,19 @@ services:
           - ./data:/var/lib/mysql/
         ports:
             - 3306:3306
-    adminer:
-      image: adminer
-      restart: always
-      ports:
-        - 8182:8080
+    beekeeper:
+        depends_on:
+            - mysql
+        build:
+            context: .
+            dockerfile: docker/beekeeper/Dockerfile
+        ports:
+            - 9999:8080
+    # adminer:
+    #   image: adminer
+    #   restart: always
+    #   ports:
+    #     - 8182:8080
     php:
         depends_on:
             - mysql
