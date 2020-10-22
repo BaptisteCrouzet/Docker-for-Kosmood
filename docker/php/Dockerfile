@@ -4,6 +4,9 @@ ARG PHP_TIMEZONE
 # From the php specified version
 FROM php:7.4-fpm
 
+# Author
+LABEL Baptiste Crouzet <mailpro@baptistecrouzet.fr>
+
 # Copy the php.ini config file somewhere in order to enbled it for our app
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
 
