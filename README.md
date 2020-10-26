@@ -38,3 +38,13 @@ See Makefile for more details :
 * `make up-build`: -> build the containers and launch
 * `make up-silent`-> launch in background
 * `make sf-terminal`-> enter with the terminal inside the symfony's container
+
+## Run the Kosmood project
+
+1. Clone kosmood code
+2. Run `make build`
+3. Run `make up`
+4. Install kosmood dependencies
+5. Set up the DB and access it with the help of PHPMyAdmin, Adminer or Beekeeper-studio. Port to use 3306 and set up credentials inside `docker-compose.yaml` line 8 to 11.
+6. Clear cache
+7. Access the application on [http://localhost:80](http://localhost:80)
