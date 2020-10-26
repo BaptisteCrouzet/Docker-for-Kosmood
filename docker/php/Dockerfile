@@ -1,9 +1,18 @@
-FROM php:7.4.11-fpm
-ARG TIMEZONE
+# Set up the arguments
+ARG PHP_TIMEZONE
 
+# From the php specified version
+FROM php:7.4-fpm
+
+# Author
+LABEL Baptiste Crouzet <mailpro@baptistecrouzet.fr>
+
+# Copy the php.ini config file somewhere in order to enbled it for our app
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
 
+# Install libraries
 RUN apt-get update && apt-get install -y \
+    inkscape \
     gnupg \
     g++ \
     procps \
@@ -15,25 +24,48 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libpng-dev \
     libjpeg-dev \
-    libicu-dev  \
     libonig-dev \
     libxslt1-dev \
+    libmagickwand-dev \
     acl \
     curl \
     && echo 'alias sf="php bin/console"' >> ~/.bashrc
 
+# Install PHP extensions and enable it
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype
 
 RUN docker-php-ext-install \
     pdo pdo_mysql zip xsl gd intl opcache exif mbstring
 
-# Set timezone
-RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone \
-    && printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini \
+RUN apt-get install -y libicu-dev \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl
+
+RUN pecl install \
+    xdebug \
+    imagick
+
+RUN docker-php-ext-enable \
+    xdebug \
+    imagick
+
+# Set timezone for PHP
+RUN ln -snf /usr/share/zoneinfo/${PHP_TIMEZONE} /etc/localtime && echo ${PHP_TIMEZONE} > /etc/timezone \
+    && printf '[PHP]\ndate.timezone = "%s"\n', ${PHP_TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini \
     && "date"
 
+# Install composer + prestissimo in order to download composer dependencies in parallel
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer --version \
     && composer global require hirak/prestissimo
 
+# CMD composer install ; wait-for-it database:3306 -- bin/console doctrine:migrations:migrate ;  php-fpm
+
+# Set the current user
+USER www-data
+
+# Sets the current directory
 WORKDIR /var/www/symfony
+
+# Expose port 9000
+EXPOSE 9000

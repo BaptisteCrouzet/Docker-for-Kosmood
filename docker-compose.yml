@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    dbMysql:
+    mysql:
         image: mysql:latest
         restart: always
         environment:
@@ -13,32 +13,50 @@ services:
           - ./data:/var/lib/mysql/
         ports:
             - 3306:3306
-    adminer:
-      image: adminer
-      restart: always
-      ports:
-        - 8182:8080
+    # beekeeper:
+    #     depends_on:
+    #         - mysql
+    #     build:
+    #         context: .
+    #         dockerfile: docker/beekeeper/Dockerfile
+    #     ports:
+    #         - 127.0.0.1:9999:8080
+    #     environment:
+    #         net: host
+    #         DISPLAY: ${DISPLAY}
+    #     volumes:
+    #         - $home/.Xauthority:/root/.Xauthority
+    #         - /tmp/.X11-unix:/tmp/.X11-unix
     php:
+        depends_on:
+            - mysql
         build:
             context: .
             dockerfile: docker/php/Dockerfile
             args:
-                TIMEZONE: ${TIMEZONE}
+                TIMEZONE: ${PHP_TIMEZONE}
         volumes:
-            - ./symfony/:/var/www/symfony/
+            - ./www/:/var/www/symfony/
         networks:
             - symfony
+        environment:
+          - APP_ENV=${APP_ENV}
+          - APP_SECRET=${APP_SECRET}
+          - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@127.0.0.1:3306/${MYSQL_DATABASE}
+          - PHP_TIMEZONE=${PHP_TIMEZONE}
     nginx:
+        depends_on:
+            - php
         build:
             context: .
             dockerfile: docker/nginx/Dockerfile
         volumes:
-            - ./symfony/:/var/www/symfony/
+            - ./www/:/var/www/symfony/
         ports:
             - 80:80
+            - 443:443
         networks:
             - symfony
-
 volumes:
     db_app:
 
