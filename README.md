@@ -6,17 +6,16 @@ The aim of this docker is to be able to run the Kosmood's code easily whitout lo
 
 * Docker [[installation link](https://docs.docker.com/get-docker/)]
 * Docker-compose [[installation link](https://docs.docker.com/compose/install/)]
-
-Add the kosmood project to the right directory : `git clone https://github.com/Incubateur-Web/Kosmood.git www`
+* Add the kosmood project to the right directory : `git clone https://github.com/Incubateur-Web/Kosmood.git www`
 
 ## Structure
 
-`data` folder is the data where are stored and persisted the datas, the files belonging to MySQL.
-`docker` folder contains Dockerfiles and configuration files for each containers.
-`www` folder contains the code of the project.
-`Makefile` file containing some useful commands.
-`docker-compose.yaml` administrate your containers
-`.env` here comes all of your variables
+* `data` folder is the data where are stored and persisted the datas, the files belonging to MySQL.
+* `docker` folder contains Dockerfiles and configuration files for each containers.
+* `www` folder contains the code of the project.
+* `Makefile` file containing some useful commands.
+* `docker-compose.yaml` administrate your containers
+* `.env` here comes all of your variables
 
 ## Services
 
