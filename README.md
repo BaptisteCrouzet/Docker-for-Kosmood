@@ -15,6 +15,8 @@ Add the kosmood project to the right directory : `git clone https://github.com/I
 `docker` folder contains Dockerfiles and configuration files for each containers.
 `www` folder contains the code of the project.
 `Makefile` file containing some useful commands.
+`docker-compose.yaml` administrate your containers
+`.env` here comes all of your variables
 
 ## Services
 
@@ -33,18 +35,22 @@ make {command}
 
 See Makefile for more details :
 
-* `make build` -> Build the dockers containers, all and hard
-* `make up`-> launch the containers for the project
-* `make up-build`: -> build the containers and launch
-* `make up-silent`-> launch in background
-* `make sf-terminal`-> enter with the terminal inside the symfony's container
+* `make build` -----------> Build the dockers containers, all and hard
+* `make up`---------------> Launch the containers for the project
+* `make up-build`: -------> Build the containers and launch
+* `make up-silent`--------> Launch in background
+* `make sf-terminal`------> Enter with the terminal inside the symfony's container then exit with `Ctrl+D`
+* `make sf-first-launch` -> Command to execute if you've never launched the project
+* `make sf-db-install` ---> Command to launch if you haven't yet your DB
 
 ## Run the Kosmood project
 
 1. Clone kosmood code
 2. Run `make build`
 3. Run `make up`
-4. Install kosmood dependencies
-5. Set up the DB and access it with the help of PHPMyAdmin, Adminer or Beekeeper-studio. Port to use 3306 and set up credentials inside `docker-compose.yaml` line 8 to 11.
-6. Clear cache
-7. Access the application on [http://localhost:80](http://localhost:80)
+4. Run `make sf-first-launch`
+5. Run `make sf-db-install`
+6. Install kosmood dependencies
+. Set up the DB and access it with the help of PHPMyAdmin, Adminer or Beekeeper-studio. Port to use 3306 and set up credentials inside `docker-compose.yaml` line 8 to 11.
+7. Clear cache
+8. Access the application on [http://localhost:80](http://localhost:80)

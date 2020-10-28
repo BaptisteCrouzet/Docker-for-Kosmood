@@ -55,9 +55,10 @@ RUN ln -snf /usr/share/zoneinfo/${PHP_TIMEZONE} /etc/localtime && echo ${PHP_TIM
     && "date"
 
 # Install composer + prestissimo in order to download composer dependencies in parallel
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer --version \
-    && composer global require hirak/prestissimo
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN composer --version
+    # && composer global require hirak/prestissimo
 
 # CMD composer install ; wait-for-it database:3306 -- bin/console doctrine:migrations:migrate ;  php-fpm
 
