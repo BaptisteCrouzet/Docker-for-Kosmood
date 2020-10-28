@@ -1,10 +1,29 @@
+# Makefile for your commands ! Use it by typing : make xxcommandxx
+
+# Build docker all even it was built before
 build:
-	docker-compose up --build --force-recreate --remove-orphans --no-start # Build it all and hard
+	docker-compose up --build --force-recreate --remove-orphans --no-start
+
+# laucnh docker
 up:
-	docker-compose up # laucnh it
+	docker-compose up
+
+# build docker and launch it
 up-build:
-	docker-compose up --build # build it and launch it
+	docker-compose up --build
+
+# lanch docker in background
 up-silent:
-	docker-compose up -d # lanch in background
+	docker-compose up -d
+
+# enter inside the symfony container with the terminal
 sf-terminal:
 	docker run -it --entrypoint=/bin/bash kosmooddocker_php
+
+# command to execute if you've never launched the project
+sf-first-launch:
+	cd symfony www && composer install éé yarn install && php bin/console cache:clear && yarn run dev && cd ..
+
+# command to launch if you haven't yet your DB
+sf-db-install:
+	cd symfony && php bin/console doctrine:schema:update --force && cd ..

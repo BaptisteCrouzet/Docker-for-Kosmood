@@ -5,14 +5,14 @@ services:
         image: mysql:latest
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: kosmood
-            MYSQL_USER: root
-            MYSQL_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
           - ./data:/var/lib/mysql/
         ports:
-            - 3306:3306
+            - ${MYSQL_PORT}:3306
     # beekeeper:
     #     depends_on:
     #         - mysql
@@ -42,7 +42,7 @@ services:
         environment:
           - APP_ENV=${APP_ENV}
           - APP_SECRET=${APP_SECRET}
-          - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@127.0.0.1:3306/${MYSQL_DATABASE}
+          - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@127.0.0.1:${MYSQL_PORT}/${MYSQL_DATABASE}
           - PHP_TIMEZONE=${PHP_TIMEZONE}
     nginx:
         depends_on:
