@@ -10,9 +10,14 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
-          - ./data:/var/lib/mysql/
+            - ./data:/var/lib/mysql/
         ports:
             - ${MYSQL_PORT}:3306
+        cap_add:
+            - SYS_NICE  # CAP_SYS_NICE
+        networks:
+            - symfony
+            - mysql
     # beekeeper:
     #     depends_on:
     #         - mysql
@@ -39,11 +44,12 @@ services:
             - ./www/:/var/www/symfony/
         networks:
             - symfony
+            - mysql
         environment:
-          - APP_ENV=${APP_ENV}
-          - APP_SECRET=${APP_SECRET}
-          - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@127.0.0.1:${MYSQL_PORT}/${MYSQL_DATABASE}
-          - PHP_TIMEZONE=${PHP_TIMEZONE}
+            - APP_ENV=${APP_ENV}
+            - APP_SECRET=${APP_SECRET}
+            - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:${MYSQL_PORT}/${MYSQL_DATABASE}
+            - PHP_TIMEZONE=${PHP_TIMEZONE}
     nginx:
         depends_on:
             - php
@@ -57,8 +63,10 @@ services:
             - 443:443
         networks:
             - symfony
+            - mysql
 volumes:
     db_app:
 
 networks:
     symfony:
+    mysql:
