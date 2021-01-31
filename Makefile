@@ -16,6 +16,10 @@ up-build:
 up-silent:
 	docker-compose up -d
 
+# Launch docker in production with a production compose version (with the right php.ini)
+up-production:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
 # enter inside the symfony container with the terminal
 sf-terminal:
 	docker run -it --entrypoint=/bin/bash kosmooddocker_php
