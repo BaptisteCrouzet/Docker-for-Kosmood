@@ -1,5 +1,6 @@
 # Set up the arguments
 ARG PHP_TIMEZONE
+ARG PHP_INI_PATH
 
 # From the php specified version
 FROM php:7.4-fpm
@@ -8,7 +9,7 @@ FROM php:7.4-fpm
 LABEL Baptiste Crouzet <mailpro@baptistecrouzet.fr>
 
 # Copy the php.ini config file somewhere in order to enbled it for our app
-COPY docker/php/php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
+COPY  ${PHP_INI_PATH} /usr/local/etc/php/conf.d/docker-php-config.ini
 
 # Install libraries
 RUN apt-get update && apt-get install -y \
