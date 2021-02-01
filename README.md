@@ -1,12 +1,13 @@
 # A docker system for Kosmood
 
-The aim of this docker is to be able to run the Kosmood's code easily whitout losing time in any configuration.
+The aim of this docker project is to be able to run the Kosmood's code easily whitout losing time in any configuration.
+This repository can be used in production environment too for an easy deployment.
 
 ## Prerequisities
 
 * Docker [[installation link](https://docs.docker.com/get-docker/)]
 * Docker-compose [[installation link](https://docs.docker.com/compose/install/)]
-* Add the kosmood project to the right directory : `git clone https://github.com/Incubateur-Web/Kosmood.git www`
+* Add the kosmood project to the right directory : `git clone {REPOSITORY URL} www`
 
 ## Structure
 

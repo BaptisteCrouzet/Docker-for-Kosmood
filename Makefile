@@ -4,15 +4,15 @@
 build:
 	docker-compose up --build --force-recreate --remove-orphans --no-start
 
-# laucnh docker
+# Laucnh docker
 up:
 	docker-compose up
 
-# build docker and launch it
+# Build docker and launch it
 up-build:
 	docker-compose up --build
 
-# lanch docker in background
+# Launch docker in background
 up-silent:
 	docker-compose up -d
 
@@ -20,14 +20,14 @@ up-silent:
 up-production:
 	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
-# enter inside the symfony container with the terminal
+# Enter inside the symfony container with the terminal
 sf-terminal:
 	docker run -it --entrypoint=/bin/bash kosmooddocker_php
 
-# command to execute if you've never launched the project
+# Command to execute if you've never launched the project
 sf-first-launch:
-	cd symfony www && composer install éé yarn install && php bin/console cache:clear && yarn run dev && cd ..
+	cd www && composer install && yarn install --force && php bin/console cache:clear && yarn run dev && cd ..
 
-# command to launch if you haven't yet your DB
+# Command to launch if you haven't yet your DB
 sf-db-install:
-	cd symfony && php bin/console doctrine:schema:update --force && cd ..
+	cd www && php bin/console doctrine:schema:update --force && cd ..

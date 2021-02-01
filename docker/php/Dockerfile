@@ -50,6 +50,15 @@ RUN docker-php-ext-enable \
     xdebug \
     imagick
 
+
+RUN pecl install \
+        apcu-5.1.19 \
+    ; \
+    pecl clear-cache; \
+    docker-php-ext-enable \
+        apcu \
+    ;
+
 # Set timezone for PHP
 RUN ln -snf /usr/share/zoneinfo/${PHP_TIMEZONE} /etc/localtime && echo ${PHP_TIMEZONE} > /etc/timezone \
     && printf '[PHP]\ndate.timezone = "%s"\n', ${PHP_TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini \
