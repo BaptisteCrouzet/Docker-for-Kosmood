@@ -4,6 +4,10 @@
 build:
 	docker-compose up --build --force-recreate --remove-orphans --no-start
 
+# Build docker all even it was built before (production mode)
+build-production:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build --force-recreate --remove-orphans --no-start
+
 # Laucnh docker
 up:
 	docker-compose up
