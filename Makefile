@@ -4,6 +4,10 @@
 build:
 	docker-compose up --build --force-recreate --remove-orphans --no-start
 
+# Build docker all even it was built before (production mode)
+build-production:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build --force-recreate --remove-orphans --no-start
+
 # Laucnh docker
 up:
 	docker-compose up
@@ -15,6 +19,10 @@ up-build:
 # Launch docker in background
 up-silent:
 	docker-compose up -d
+
+# Launch docker in production with a production compose version (with the right php.ini)
+up-production:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 # Enter inside the symfony container with the terminal
 sf-terminal:
