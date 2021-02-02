@@ -38,8 +38,6 @@ services:
         build:
             context: .
             dockerfile: docker/php/Dockerfile
-            args:
-                TIMEZONE: ${PHP_TIMEZONE}
         restart: unless-stopped
         healthcheck:
             interval: 10s
