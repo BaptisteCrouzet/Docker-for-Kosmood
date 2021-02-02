@@ -26,7 +26,7 @@ up-production:
 
 # Enter inside the symfony container with the terminal
 sf-terminal:
-	docker run -it --entrypoint=/bin/bash kosmooddocker_php
+	docker run -it --entrypoint=/bin/bash dockerkosmood_php
 
 # Command to execute if you've never launched the project
 sf-first-launch:
