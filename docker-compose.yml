@@ -2,6 +2,7 @@ version: '3'
 
 services:
     mysql:
+        container_name: dockerkosmood_mysql
         image: mysql:latest
         restart: unless-stopped
         environment:
@@ -33,13 +34,12 @@ services:
     #         - $home/.Xauthority:/root/.Xauthority
     #         - /tmp/.X11-unix:/tmp/.X11-unix
     php:
+        container_name: dockerkosmood_php
         depends_on:
             - mysql
         build:
             context: .
             dockerfile: docker/php/Dockerfile
-            args:
-                TIMEZONE: ${PHP_TIMEZONE}
         restart: unless-stopped
         healthcheck:
             interval: 10s
@@ -57,20 +57,34 @@ services:
             - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:${MYSQL_PORT}/${MYSQL_DATABASE}
             - PHP_TIMEZONE=${PHP_TIMEZONE}
     nginx:
+        container_name: dockerkosmood_nginx
         depends_on:
             - php
         build:
             context: .
             dockerfile: docker/nginx/Dockerfile
         restart: unless-stopped
-        volumes:
-            - ./www/:/var/www/symfony/
         ports:
             - 80:80
             - 443:443
         networks:
             - symfony
             - mysql
+        volumes:
+            - ./www/:/var/www/symfony/
+            - ./data/certbot/conf:/etc/letsencrypt
+            - ./data/certbot/www:/var/www/certbot
+            - ./docker/nginx/conf:/etc/nginx/
+        #command:
+        #- "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    certbot:
+        container_name: dockerkosmood_certbot
+        image: certbot/certbot
+        restart: unless-stopped
+        volumes:
+            - ./data/certbot/conf:/etc/letsencrypt
+            - ./data/certbot/www:/var/www/certbot
+        entrypoint: ["echo", "Service certbot disabled"]
 volumes:
     db_app:
 
